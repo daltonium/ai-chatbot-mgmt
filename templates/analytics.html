@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ bot.name }} Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ bot.name }} Analytics ({{ bot.template|upper }} Template)</h1>
+    <a href="{{ url_for('bot.dashboard') }}">← Back to Dashboard</a>
+
+    <div class="analytics">
+        <h3>Key Metrics</h3>
+        <p><strong>Total Interactions:</strong> {{ total_interactions }}</p>
+        <p><strong>Top Intent:</strong> {{ top_intent }}</p>
+        
+        <h3>Intent Distribution</h3>
+        <ul>
+        {% for intent, count in intent_counts.items() %}
+            <li>{{ intent }}: {{ count }} ({{ "%.1f"|format((count/total_interactions*100) if total_interactions else 0) }}%)</li>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

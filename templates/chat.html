@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with {{ bot.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Chat with {{ bot.name }} ({{ bot.personality }})</h1>
+    <a href="{{ url_for('bot.dashboard') }}">← Back to Dashboard</a>
+    
+    <div id="chat-container">
+        <div id="messages"></div>
+        <input type="text" id="message-input" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const botId = {{ bot.id }};
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('message-input');
+
+        function addMessage(content, isUser = false) {
+            const msg = document.createElement('div');
+            msg.className = isUser ? 'user-message' : 'bot-message';
+            msg.textContent = content;
+            messages.appendChild(msg);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            
+            try {
+                const response = await fetch('/chat_response', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({bot_id: botId, message: message})
+                });
+                const data = await response.json();
+                addMessage(data.response);
+            } catch (e) {
+                addMessage('Error: Could not get response');
+            }
+        }
+
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

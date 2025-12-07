@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Train {{ bot.name }} - AI Chatbot Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>Train "{{ bot.name }}"</h1>
+        <h2 class="dashboard-subtitle">Easy training with drag-and-drop and datasets</h2>
+    </div>
+
+    <a href="{{ url_for('bot.dashboard') }}">← Back to Dashboard</a>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="train-grid">
+        <div class="train-card">
+            <h3>📥 Import Dataset (Drag & Drop)</h3>
+            <form id="import-form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="import">
+                <div id="drop-zone">
+                    <p>Drop JSON/CSV file here or click to choose</p>
+                    <input type="file" name="dataset" id="dataset-input" accept=".json,.csv">
+                </div>
+                <button type="submit">Import Dataset</button>
+            </form>
+            <p class="hint">Use this to upload training data collected from other sources.</p>
+        </div>
+
+        <div class="train-card">
+            <h3>📤 Export Current Dataset</h3>
+            <p>Download all past interactions of this bot as JSON.</p>
+            <a class="btn-small" href="{{ url_for('bot.export_dataset', bot_id=bot.id) }}" target="_blank">
+                Download JSON
+            </a>
+
+            <hr style="margin:20px 0;">
+
+            <h3>⚙️ Quick Train from Logs</h3>
+            <p>Train the bot using recent interaction logs.</p>
+            <form method="POST">
+                <input type="hidden" name="action" value="train">
+                <button type="submit" class="train-btn btn-small">Train Now</button>
+            </form>
+        </div>
+
+        <div class="train-card full-width">
+            <h3>👁️ Preview Training Data (from logs)</h3>
+            <textarea readonly rows="12" style="width:100%; font-family:'Fira Code',monospace;">
+{{ dataset_json }}
+            </textarea>
+        </div>
+    </div>
+
+<script>
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('dataset-input');
+
+dropZone.addEventListener('click', () => fileInput.click());
+
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+});
+
+dropZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+});
+
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+    }
+});
+</script>
+</body>
+</html>

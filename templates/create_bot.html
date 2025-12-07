@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Chatbot - AI Chatbot Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>Create New Chatbot</h1>
+        <h2 class="dashboard-subtitle">Choose template and personality</h2>
+    </div>
+
+    <a href="{{ url_for('bot.dashboard') }}">← Back to Dashboard</a>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label>Name
+            <input type="text" name="name" required>
+        </label>
+
+        <label>Template
+            <select name="template">
+                <option value="general">General Support</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="retail">Retail/E-commerce</option>
+                <option value="education">Education</option>
+            </select>
+        </label>
+
+        <label>Personality
+            <select name="personality">
+                <option value="friendly">👋 Friendly</option>
+                <option value="professional">💼 Professional</option>
+                <option value="casual">😎 Casual</option>
+                <option value="formal">🎩 Formal</option>
+                <option value="humorous">😂 Humorous</option>
+                <option value="empathetic">❤️ Empathetic</option>
+            </select>
+        </label>
+
+        <button type="submit">🚀 Create Bot</button>
+    </form>
+</body>
+</html>

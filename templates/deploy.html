@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deploy {{ bot.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Deploy {{ bot.name }} ({{ bot.template|upper }} Template)</h1>
+    <a href="{{ url_for('bot.dashboard') }}">← Back to Dashboard</a>
+
+    <div class="deploy-section">
+        <h3>📱 Multi-Channel Deployment</h3>
+        <div class="channels">
+            <div class="channel website"><strong>🌐 Website</strong></div>
+            <div class="channel whatsapp"><strong>📱 WhatsApp</strong></div>
+            <div class="channel slack"><strong>💬 Slack</strong></div>
+            <div class="channel api"><strong>🔌 REST API</strong></div>
+        </div>
+    </div>
+
+    <div class="deploy-section">
+        <h3>💻 Website Embed Code</h3>
+        <textarea id="embed-code" readonly rows="8" cols="80">{{ embed_code }}</textarea>
+        <br><button onclick="copyEmbedCode()">📋 Copy to Clipboard</button>
+        <p><small>Paste this code before </small><code>&lt;/body&gt;</code><small> on your website.</small></p>
+    </div>
+
+    <div class="deploy-section">
+        <h3>🧪 Live Test</h3>
+        <div id="test-chatbot">
+            <div id="test-messages"></div>
+            <input type="text" id="test-input" placeholder="Test your chatbot here..." />
+            <button onclick="testSendMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="deploy-section">
+        <h3>📊 API Documentation</h3>
+        <p><strong>POST /chat_response</strong></p>
+        <pre>{
+  "bot_id": {{ bot.id }},
+  "message": "hello"
+}</pre>
+        <p><strong>Returns:</strong> <code>{"response": "Hello! How can I help?"}</code></p>
+    </div>
+
+<script>
+const botId = {{ bot.id }};
+const testMessages = document.getElementById('test-messages');
+const testInput = document.getElementById('test-input');
+
+function addTestMessage(content, isUser = false) {
+    const msg = document.createElement('div');
+    msg.className = isUser ? 'user-message' : 'bot-message';
+    msg.textContent = content;
+    testMessages.appendChild(msg);
+    testMessages.scrollTop = testMessages.scrollHeight;
+}
+
+async function testSendMessage() {
+    const message = testInput.value.trim();
+    if (!message) return;
+    
+    addTestMessage(message, true);
+    testInput.value = '';
+    
+    try {
+        const response = await fetch('/chat_response', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({bot_id: botId, message: message})
+        });
+        const data = await response.json();
+        addTestMessage(data.response);
+    } catch (e) {
+        addTestMessage('Error: Could not get response');
+    }
+}
+
+function copyEmbedCode() {
+    const embedCode = document.getElementById('embed-code');
+    embedCode.select();
+    document.execCommand('copy');
+    alert('Embed code copied to clipboard!');
+}
+
+testInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') testSendMessage();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+myenv/
+venv/
+env/
+ENV/
+.venv
+
+# Flask instance folder (contains SQLite DB)
+instance/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database files (if you don't want to commit them)
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# SSL certificates (if generated locally)
+cert/
+
+# Training data uploads (optional, depends on your preference)
+instance/training_data/

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot Management Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>🤖 AI Chatbot Management System</h1>
+        <h2 class="dashboard-subtitle">Your AI Chatbot Management System, simplified.</h2>
+    </div>
+
+    {% if user %}
+      <p style="text-align:right; margin-top:10px;">
+        Logged in as <strong>{{ user.username }}</strong> ({{ user.role|title }})
+        | <a href="{{ url_for('auth.logout') }}">Logout</a>
+      </p>
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="action-bar">
+        <a href="{{ url_for('bot.create_bot') }}" class="btn-primary">➕ Create New Bot</a>
+    </div>
+
+    <h2>📊 Your Chatbots ({{ chatbots|length }})</h2>
+    
+    {% if chatbots %}
+        <div class="chatbots-grid">
+            {% for bot in chatbots %}
+            <div class="chatbot-card">
+                <div class="card-header">
+                    <h3>{{ bot.name }}</h3>
+                    <span class="status-active">LIVE</span>
+                </div>
+                
+                <div class="card-meta">
+                    <span class="template-badge">{{ bot.template|upper }}</span>
+                    <span class="personality-badge">{{ bot.personality|title }}</span>
+                    <span class="interactions">{{ stats[bot.id] }} interactions</span>
+                </div>
+                
+                <div class="card-actions">
+                    <a href="{{ url_for('bot.chat', bot_id=bot.id) }}" class="btn-small">💬 Chat</a>
+                    <a href="{{ url_for('bot.analytics', bot_id=bot.id) }}" class="btn-small analytics-btn">📈 Analytics</a>
+                    <a href="{{ url_for('bot.train_bot', bot_id=bot.id) }}" class="btn-small train-btn">⚙️ Train</a>
+                    
+                    {% if user and user.role == 'admin' %}
+                        <a href="{{ url_for('bot.deploy_bot', bot_id=bot.id) }}" class="btn-small deploy-btn">🚀 Deploy</a>
+                    {% else %}
+                        <span style="font-size:12px;color:#888;">Deploy: Admin only</span>
+                    {% endif %}
+                </div>
+                
+                <div class="card-footer">
+                    <small>Created: {{ bot.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🤖</div>
+            <h3>No chatbots yet</h3>
+            <p>Create your first chatbot to get started!</p>
+            <a href="{{ url_for('bot.create_bot') }}" class="btn-primary">Create First Bot</a>
+        </div>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 40px; padding-top: 40px; border-top: 1px solid #e1e8ed;">
+        <p><small>Powered by Flask &amp; SQLAlchemy | Mini Project Demo</small></p>
+    </div>
+</body>
+</html>
