@@ -13,4 +13,4 @@ if __name__ == '__main__':
     else:
         print("Running without SSL (dev).")
 
-    app.run(debug=True, host='127.0.0.1', port=5000, ssl_context=ssl_context)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-chatbot-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-chatbot-mgmt
+  template:
+    metadata:
+      labels:
+        app: ai-chatbot-mgmt
+    spec:
+      containers:
+        - name: ai-chatbot-mgmt
+          # push your image to Docker Hub or use local registry
+          image: yourdockerid/ai-chatbot-mgmt:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
