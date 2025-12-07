@@ -1,0 +1,62 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - info
+  - purchase
+  - health
+  - unknown
+
+responses:
+  utter_greet_friendly:
+    - text: "Hello! How can I help? 😊"
+  
+  utter_greet_professional:
+    - text: "Hello! How may I assist you today?"
+  
+  utter_greet_casual:
+    - text: "Hey! What's up? 😎"
+  
+  utter_greet_formal:
+    - text: "Good day! How may I be of service?"
+  
+  utter_greet_humorous:
+    - text: "Hello! I'm your friendly AI overlord! 😄"
+  
+  utter_greet_empathetic:
+    - text: "Hi there! I'm here for you! ❤️"
+
+  utter_goodbye_friendly:
+    - text: "Goodbye! Have a great day! 👋"
+  
+  utter_goodbye_professional:
+    - text: "Thank you. Goodbye."
+  
+  utter_goodbye_casual:
+    - text: "Catch ya later! ✌️"
+  
+  utter_goodbye_formal:
+    - text: "Farewell. Have a pleasant day."
+  
+  utter_goodbye_humorous:
+    - text: "Bye! Don't forget to feed your robot! 🤖"
+  
+  utter_goodbye_empathetic:
+    - text: "Take care! I'm always here if you need me! 💕"
+
+  utter_info:
+    - text: "This is a demo chatbot powered by AI Chatbot Management System with Rasa AI."
+  
+  utter_purchase:
+    - text: "You can buy products from our store! 🛒"
+  
+  utter_health:
+    - text: "Please consult a healthcare professional. 🩺"
+  
+  utter_unknown:
+    - text: "Sorry, I did not understand. 😅"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

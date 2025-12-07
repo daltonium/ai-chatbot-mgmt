@@ -1,0 +1,53 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - hey
+    - good morning
+    - good evening
+    - hi there
+    - hello there
+    - greetings
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - bye bye
+    - catch you later
+    - talk to you later
+    - see ya
+
+- intent: info
+  examples: |
+    - help
+    - info
+    - what can you do
+    - tell me about yourself
+    - what are you
+    - information
+    - help me
+
+- intent: purchase
+  examples: |
+    - i want to buy
+    - buy something
+    - purchase
+    - shopping
+    - i want to shop
+    - buy products
+    - where can i buy
+
+- intent: health
+  examples: |
+    - doctor
+    - health question
+    - medical advice
+    - i feel sick
+    - health issue
+    - consult doctor
+    - medical help

@@ -14,7 +14,7 @@ import uuid
 from werkzeug.utils import secure_filename
 
 from .models import Chatbot, InteractionLog
-from .nlp import SimpleNLPEngine
+from .rasa_integration import RasaNLPEngine
 from . import db
 from .auth_routes import login_required, current_user
 
@@ -73,7 +73,7 @@ def chat_response():
     bot = Chatbot.query.get(bot_id)
     personality = bot.personality if bot else 'friendly'
 
-    intent, response = SimpleNLPEngine.predict_intent(message, personality)
+    intent, response = RasaNLPEngine.predict_intent(message, personality)
 
     log = InteractionLog(
         bot_id=bot_id,
